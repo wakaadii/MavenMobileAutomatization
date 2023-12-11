@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.util.concurrent.TimeUnit;
+
 abstract public class ArticlePageObject extends MainPageObject{
 
     protected static String
@@ -102,8 +104,7 @@ abstract public class ArticlePageObject extends MainPageObject{
     }
 
     public void removeSavedArticleBeforeAdding(){
-        if (this.isElementPresent(OPTIONS_REMOVE_FROM_LIST_BUTTON)){
-            System.out.println("removeSavedArticleBeforeAdding() artivlepageobject");
+        if (this.isElementPresent(OPTIONS_REMOVE_FROM_LIST_BUTTON)) {
             this.waitForElementAndClick(
                     OPTIONS_REMOVE_FROM_LIST_BUTTON,
                     "Can't remove article from reading list",

@@ -2,9 +2,7 @@ package homeworkTests;
 
 import lib.CoreTestCase;
 import lib.Platform;
-import lib.ui.ArticlePageObject;
-import lib.ui.SavedListsPageObject;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import lib.ui.factory.ArticlePageObjectFactory;
 import lib.ui.factory.SavedListsPageObjectFactory;
 import lib.ui.factory.SearchPageObjectFactory;
@@ -15,8 +13,10 @@ public class SavedBookmarksTests extends CoreTestCase {
     //ex5
     private static final String searchLine = "java",
             folderName = "first list",
-            textFirstSavedPage = "Java (programming language)",
-            textSecondSavedPage = "JavaScript";
+            textFirstSavedPage = "Object-oriented programming language",
+            textSecondSavedPage = "High-level programming language",
+            login = "wakaadii",
+            password = "Aezakmi1";
     @Test
         public void testSaveAndDeleteBookmarks(){
 
@@ -45,7 +45,7 @@ public class SavedBookmarksTests extends CoreTestCase {
             SavedListsPageObject.openListOfBookmarks(folderName);
             SavedListsPageObject.deleteBookmarkFromList(FirstArticleTitle);
             SavedListsPageObject.waitForArticleToAppearByTitle(SecondArticleTitle);
-        } else {
+        } else if (Platform.getInstance().isIOS()){
             ArticlePageObject.waitForTitleElement(textFirstSavedPage);
             FirstArticleTitle = ArticlePageObject.getArticleTitle(textFirstSavedPage);
             ArticlePageObject.saveArticleToDefaultList();
@@ -59,6 +59,35 @@ public class SavedBookmarksTests extends CoreTestCase {
             ArticlePageObject.openSavedLists();
             SavedListsPageObject.deleteBookmarkFromList(FirstArticleTitle);
             SavedListsPageObject.waitForArticleToAppearByTitle(SecondArticleTitle);
+        } else {
+            AuthorizationPageObject auth = new AuthorizationPageObject(driver);
+            NavigationUIPageObject navigation = new NavigationUIPageObject(driver);
+            ArticlePageObject.waitForTitleElement();
+            FirstArticleTitle = ArticlePageObject.getArticleTitle();
+            ArticlePageObject.saveArticleToDefaultList();
+
+            auth.clickAuthButton();
+            auth.enterLoginData(login, password);
+            auth.submitForm();
+
+            ArticlePageObject.waitForTitleElement();
+
+            assertEquals("We are not on the same page after login",
+                    FirstArticleTitle,
+                    ArticlePageObject.getArticleTitle());
+
+            SearchPageObject.initSearchInput();
+            SearchPageObject.typeSearchLine(searchLine);
+            SearchPageObject.clickByArticleWithSubstring(textSecondSavedPage);
+            ArticlePageObject.waitForTitleElement();
+            SecondArticleTitle = ArticlePageObject.getArticleTitle();
+            ArticlePageObject.saveArticleToDefaultList();
+            navigation.openNavigation();
+            navigation.clickToMyLists();
+            SavedListsPageObject.deleteBookmarkFromList(FirstArticleTitle);
+            System.out.println(SecondArticleTitle);
+            SavedListsPageObject.waitForArticleToAppearByH3(SecondArticleTitle);
+
         }
     }
 

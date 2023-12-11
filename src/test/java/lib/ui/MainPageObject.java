@@ -56,7 +56,7 @@ public class MainPageObject {
         int currentAttempt = 0;
         boolean needMoreAttempts = true;
 
-//        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 
         while (needMoreAttempts) {
             try {

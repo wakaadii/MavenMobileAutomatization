@@ -44,6 +44,15 @@ abstract public class SavedListsPageObject extends MainPageObject{
         );
     }
 
+    public void waitForArticleToAppearByH3(String nameOfBookmark) {
+        String xpath = getBookmark(nameOfBookmark);
+        this.waitForElementPresents(
+                xpath,
+                "Can't find saved Article by title " + nameOfBookmark,
+                15
+        );
+    }
+
     public void waitForArticleToDisappearByTitle(String nameOfBookmark) {
         String xpath = getBookmark(nameOfBookmark);
         this.waitForElementNotPresent(
