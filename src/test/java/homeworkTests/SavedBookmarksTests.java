@@ -1,13 +1,16 @@
 package homeworkTests;
 
+import io.qameta.allure.Epic;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
 import lib.ui.factory.ArticlePageObjectFactory;
 import lib.ui.factory.SavedListsPageObjectFactory;
 import lib.ui.factory.SearchPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
+@Epic("bookmarks tests")
 public class SavedBookmarksTests extends CoreTestCase {
 
     //ex5
@@ -72,7 +75,7 @@ public class SavedBookmarksTests extends CoreTestCase {
 
             ArticlePageObject.waitForTitleElement();
 
-            assertEquals("We are not on the same page after login",
+            Assert.assertEquals("We are not on the same page after login",
                     FirstArticleTitle,
                     ArticlePageObject.getArticleTitle());
 

@@ -11,7 +11,8 @@ public class MWSearchPageObject extends SearchPageObject {
         SEARCH_FIELD = "css:form.search-box>input.search";
         SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://a/div[contains(text(), '{SUBSTRING}')]";
         SEARCH_RESULT_LOCATOR = "css:ul.page-list>li.page-summary";
-        NO_RESULTS_MESSAGE = "css:p.without-results";
+//        NO_RESULTS_MESSAGE = "css:p.without-results";
+        NO_RESULTS_MESSAGE = "xpath://p[@class = 'with-results'][@style = 'display: none;']";
     }
     public MWSearchPageObject(RemoteWebDriver driver) {super(driver);}
 }

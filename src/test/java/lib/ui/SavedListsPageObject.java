@@ -1,7 +1,9 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
+import org.junit.Test;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class SavedListsPageObject extends MainPageObject{
@@ -13,20 +15,24 @@ abstract public class SavedListsPageObject extends MainPageObject{
             BUTTON_TO_DELETE,
             REMOVE_FROM_SAVED_BUTTON;
 
+    @Step("change template name of folder to '{folderName}'")
     private static String getFolderByName(String folderName) {
         return NAME_OF_BOOKMARKS_LIST_TPL.replace("{FOLDER_NAME}", folderName);
     }
 
+    @Step("change template name of article to delete to '{bookmark name}'")
     private static String getBookmark(String bookmarkName) {
         return BOOKMARK_TO_DELETE_TPL.replace("{TEXT}", bookmarkName);
     }
 
+    @Step("change remove locator name to '{bookmarkName}'")
     private static String getRemoveButtonByTitle(String bookmarkName) {
         return REMOVE_FROM_SAVED_BUTTON.replace("{TEXT}", bookmarkName);
     }
 
     public SavedListsPageObject(RemoteWebDriver driver) { super(driver); }
 
+    @Step("open list of bookmarks with name '{folderName}'")
     public void openListOfBookmarks(String folderName) {
         String xpath = getFolderByName(folderName);
         this.waitForElementAndClick(
@@ -35,6 +41,7 @@ abstract public class SavedListsPageObject extends MainPageObject{
         );
     }
 
+    @Step("find article with name '{nameOfBookmark}' in saved articles")
     public void waitForArticleToAppearByTitle(String nameOfBookmark) {
         String xpath = getBookmark(nameOfBookmark);
         this.waitForElementPresents(
@@ -44,6 +51,7 @@ abstract public class SavedListsPageObject extends MainPageObject{
         );
     }
 
+    @Step("find article with name '{nameOfBookmark}' in saved articles for web")
     public void waitForArticleToAppearByH3(String nameOfBookmark) {
         String xpath = getBookmark(nameOfBookmark);
         this.waitForElementPresents(
@@ -53,6 +61,7 @@ abstract public class SavedListsPageObject extends MainPageObject{
         );
     }
 
+    @Step("verify that article '{nameOfBookmark}' is delete")
     public void waitForArticleToDisappearByTitle(String nameOfBookmark) {
         String xpath = getBookmark(nameOfBookmark);
         this.waitForElementNotPresent(
@@ -62,6 +71,7 @@ abstract public class SavedListsPageObject extends MainPageObject{
         );
     }
 
+    @Step("delete article '{nameOfBookmark}' from bookmarks")
     public void deleteBookmarkFromList(String nameOfBookmark) {
         if (Platform.getInstance().isAndroid()) {
             this.waitForArticleToAppearByTitle(nameOfBookmark);

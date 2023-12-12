@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -9,6 +10,7 @@ public class NavigationUIPageObject extends MainPageObject{
                             MY_LIST_LINKS = "xpath://a[@data-event-name='menu.watchlist']/..";
 
 
+    @Step("Open side-block with navigation for web")
     public void openNavigation() {
         if (Platform.getInstance().isMW()) {
             this.waitForElementAndClick(OPEN_NAVIGATION, "Can't click on navigation button", 5);
@@ -17,6 +19,7 @@ public class NavigationUIPageObject extends MainPageObject{
         }
     }
 
+    @Step("open bookmarks list")
     public void clickToMyLists() {
         if (Platform.getInstance().isMW()) {
             this.tryClickElementWithFewAttempts(MY_LIST_LINKS, "Can't find navigation button to saved links", 10);

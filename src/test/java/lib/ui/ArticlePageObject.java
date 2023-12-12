@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
@@ -24,18 +25,23 @@ abstract public class ArticlePageObject extends MainPageObject{
         CLOSE_SYNC_POPUP,
         NAME_OF_BOOKMARKS_LIST_TPL;
 
+
     public ArticlePageObject(RemoteWebDriver driver) { super(driver); }
 
+    @Step("find title element")
     public WebElement waitForTitleElement() {
             return this.waitForElementPresents(TITLE, "Can't find article title");
     }
 
+   @Step("find title element with name '{titleName}'")
     public WebElement waitForTitleElement(String titleName) {
         return this.waitForElementPresents(getNameOfTitle(titleName), "Can't find article title");
     }
 
+    @Step("get title of article")
     public String getArticleTitle () {
         WebElement title_element = waitForTitleElement();
+        screenshot(this.takeScreenshot("article_title"));
         if (Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("contentDescription");
         } else if (Platform.getInstance().isIOS()){
@@ -45,11 +51,13 @@ abstract public class ArticlePageObject extends MainPageObject{
         }
     }
 
+    @Step("get title of article with title name input '{titleName}'")
     public String getArticleTitle (String titleName){
         WebElement title_element = waitForTitleElement(titleName);
         return title_element.getAttribute("name");
     }
 
+    @Step("swipe to footer")
     public void swipeToFooter() {
         if (Platform.getInstance().isAndroid()) {
             this.swipeUpToElement(FOOTER_ELEMENT, "can't find the end of article", 30);
@@ -64,6 +72,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         }
     }
 
+    @Step("add article to non-default bookmark's list with name '{nameOfFolder}'")
     public void addArticleToNewList(String nameOfFolder) {
 
         this.waitForElementAndClick(
@@ -93,6 +102,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         );
     }
 
+    @Step("save article to default bookmark's list")
     public void saveArticleToDefaultList() {
         if (Platform.getInstance().isMW()) {
             this.removeSavedArticleBeforeAdding();
@@ -103,6 +113,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         );
     }
 
+    @Step("check and remove (if checked) article from bookmarks")
     public void removeSavedArticleBeforeAdding(){
         if (this.isElementPresent(OPTIONS_REMOVE_FROM_LIST_BUTTON)) {
             this.waitForElementAndClick(
@@ -116,13 +127,16 @@ abstract public class ArticlePageObject extends MainPageObject{
         }
     }
 
+    @Step("change title by template with text '{titleName}'")
     private static String getNameOfTitle (String titleName) {
         return TITLE_TPL.replace("{TEXT}", titleName);
     }
+    @Step("change bookmark's list name by template with text '{folderName}'")
     private static String getNameOfBookmarksListXpathByName (String folderName) {
         return NAME_OF_BOOKMARKS_LIST_TPL.replace("{TEXT}", folderName);
     }
 
+    @Step("add article to list '{folderName}'")
     public void addArticleToList(String folderName) {
         String folderXpath = getNameOfBookmarksListXpathByName(folderName);
 
@@ -143,6 +157,7 @@ abstract public class ArticlePageObject extends MainPageObject{
 
     }
 
+    @Step("return to previous page")
     public void closePage() {
             if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
                 this.waitForElementAndClick(
@@ -154,6 +169,7 @@ abstract public class ArticlePageObject extends MainPageObject{
             }
     }
 
+    @Step("open list of bookmarks")
     public void openSavedLists () {
         this.waitForElementAndClick(
                 SAVED_LISTS_OF_BOOKMARKS,
@@ -161,6 +177,7 @@ abstract public class ArticlePageObject extends MainPageObject{
         );
     }
 
+    @Step("verify that element is on screen")
     public void assertElementPresent() {
         Assert.assertTrue(driver.findElement(this.getLocatorByString(TITLE)).isDisplayed());
     }

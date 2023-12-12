@@ -1,34 +1,43 @@
 package lib;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import junit.framework.TestCase;
 import lib.ui.WelcomeScreenPageObject;
 import lib.ui.factory.WelcomeScreenPageObjectFactory;
+import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.Properties;
 
-public class CoreTestCase extends TestCase {
+public class CoreTestCase {
 
 
     protected RemoteWebDriver driver;
 
-    @Override
-    protected void setUp() throws Exception{
-        super.setUp();
+    @Before
+    @Step("Run driver and session")
+    public void setUp() throws Exception{
         driver = Platform.getInstance().getDriver();
+        this.createAllureProperty();
         this.rotateScreenPortrait();
         this.skipWelcomeScreen();
         this.openWikiWebPageForMobile();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    @Step("Remove driver and session")
+    public void tearDown() throws Exception {
         driver.quit();
-        super.tearDown();
     }
 
+    @Step("rotate app screen to portrait mode")
     protected void rotateScreenLandscape() {
         if (driver instanceof AppiumDriver) {
             AppiumDriver driver = (AppiumDriver) this.driver;
@@ -38,6 +47,7 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("rotate app screen to landscape mode")
     protected void rotateScreenPortrait() {
         if (driver instanceof AppiumDriver) {
             AppiumDriver driver = (AppiumDriver) this.driver;
@@ -47,6 +57,7 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("move app to background")
     protected void moveToBackground(int seconds) {
         if (driver instanceof AppiumDriver) {
             AppiumDriver driver = (AppiumDriver) this.driver;
@@ -56,6 +67,7 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("Open web page for browser")
     protected void openWikiWebPageForMobile() {
         if (Platform.getInstance().isMW()) {
             driver.get("https://en.m.wikipedia.org/");
@@ -64,6 +76,7 @@ public class CoreTestCase extends TestCase {
         }
     }
 
+    @Step("Skip welcome screen for app")
     private void skipWelcomeScreen () {
         if (driver instanceof AppiumDriver) {
             WelcomeScreenPageObject WelcomeScreenPageObject = WelcomeScreenPageObjectFactory.get(driver);
@@ -71,6 +84,22 @@ public class CoreTestCase extends TestCase {
         } else {
             System.out.println("method skipWelcomeScreen () does nothing for platform " + Platform.getInstance().getPlatformVar());
         }
+    }
+
+    public void createAllureProperty() {
+        String path = System.getProperty("allure.results.directory");
+        System.out.println(path);
+        try{
+            Properties props = new Properties();
+            FileOutputStream fos = new FileOutputStream(path + "/environment.properties");
+            props.setProperty("Environment", Platform.getInstance().getPlatformVar());
+            props.store(fos, "See https://allurereport.org/docs/how-it-works-environment-file/");
+            fos.close();
+        } catch (Exception e) {
+            System.err.println("IO problem when writing allure environment properties file");
+            e.printStackTrace();
+        }
+
     }
 
 

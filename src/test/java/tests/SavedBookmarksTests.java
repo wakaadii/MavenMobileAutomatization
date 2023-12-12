@@ -1,13 +1,17 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
 import lib.ui.factory.ArticlePageObjectFactory;
 import lib.ui.factory.SavedListsPageObjectFactory;
 import lib.ui.factory.SearchPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
+@Epic("bookmarks tests")
 public class SavedBookmarksTests extends CoreTestCase {
 
     private static final String folderName = "first list",
@@ -15,6 +19,10 @@ public class SavedBookmarksTests extends CoreTestCase {
                                 password = "Aezakmi1";
 
     @Test
+    @Features(value = {@Feature(value = "search"), @Feature(value = "article"), @Feature(value = "bookmarks")})
+    @DisplayName("Save and delete one bookmark")
+    @Description("open article, auth (for web), add article to bookmarks, open bookmarks list, delete bookmark")
+    @Step("start test testSaveAndDeleteBookmarks()")
     public void testSaveAndDeleteBookmarks(){
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -55,7 +63,7 @@ public class SavedBookmarksTests extends CoreTestCase {
 
             ArticlePageObject.waitForTitleElement();
 
-            assertEquals("We are not on the same page after login",
+            Assert.assertEquals("We are not on the same page after login",
                     ArticleTitle,
                     ArticlePageObject.getArticleTitle());
 

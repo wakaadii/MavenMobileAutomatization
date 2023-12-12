@@ -1,10 +1,13 @@
 package homeworkTests;
 
+import io.qameta.allure.Epic;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import lib.ui.factory.SearchPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
+@Epic("search tests")
 public class SearchTests extends CoreTestCase {
     //ex2
     @Test
@@ -14,7 +17,8 @@ public class SearchTests extends CoreTestCase {
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForSearchResult("Java (programming language)");
+        SearchPageObject.waitForSearchResult("Object-oriented programming language");
+//        SearchPageObject.waitForSearchResult("Java (programming language)");
     }
 
     //ex3
@@ -41,10 +45,9 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
         int counter = SearchPageObject.countNumberOfLines();
-        System.out.println(SearchPageObject.getTextOfLine(0));
 
         for (int i = 0; i < counter; i++ ) {
-            assertTrue(
+            Assert.assertTrue(
                     "there is no java in text of " + i + " element",
                     SearchPageObject.getTextOfLine(i).contains(searchLine));
         }
