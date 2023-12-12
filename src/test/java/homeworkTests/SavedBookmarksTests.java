@@ -1,6 +1,7 @@
 package homeworkTests;
 
-import io.qameta.allure.Epic;
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -14,6 +15,7 @@ import org.junit.Test;
 public class SavedBookmarksTests extends CoreTestCase {
 
     //ex5
+
     private static final String searchLine = "java",
             folderName = "first list",
             textFirstSavedPage = "Object-oriented programming language",
@@ -21,6 +23,11 @@ public class SavedBookmarksTests extends CoreTestCase {
             login = "wakaadii",
             password = "Aezakmi1";
     @Test
+    @Features(value = {@Feature(value = "search"), @Feature(value = "article"), @Feature(value = "bookmarks")})
+    @DisplayName("Save and delete two bookmark")
+    @Description("Save two articles in bookmarks and delete first added")
+    @Step("start test testSaveAndDeleteBookmarks()")
+    @Severity(value = SeverityLevel.NORMAL)
         public void testSaveAndDeleteBookmarks(){
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -98,6 +105,11 @@ public class SavedBookmarksTests extends CoreTestCase {
 
     private static final String textThirdSavedPage = "Java";
     @Test
+    @Features(value = {@Feature(value = "search"), @Feature(value = "article"), @Feature(value = "bookmarks")})
+    @DisplayName("Save and delete three bookmark")
+    @Description("Save two articles in bookmarks and delete first added")
+    @Step("start test testSaveAndDeleteThreeBookmarks()")
+    @Severity(value = SeverityLevel.MINOR)
     public void testSaveAndDeleteThreeBookmarks(){
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
